@@ -1,0 +1,43 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+.terraformrc
+terraform.rc
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.*
+
+### Maven
+.mvn/*
+
+### VS Code ###
+.vscode/
+
+.env
