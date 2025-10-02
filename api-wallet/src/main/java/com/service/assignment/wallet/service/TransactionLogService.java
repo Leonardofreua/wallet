@@ -2,6 +2,7 @@ package com.service.assignment.wallet.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -50,36 +51,8 @@ public class TransactionLogService {
      *                                 wallet
      */
     @Transactional
-    public void log(@NotNull @Valid TransactionLogBean transactionLogBean) {
-        log.info("Transaction record requested with the following criteria: {}", transactionLogBean);
-        var transaction = TransactionLog.builder()
-                .sourceWallet(transactionLogBean.sourceWallet())
-                .operation(transactionLogBean.operationType())
-                .amount(transactionLogBean.amount().value())
-                .createdAt(LocalDateTime.now());
-
-        if (transactionLogBean.operationType() == OperationType.TRANSFER) {
-            if (transactionLogBean.targetWallet() == null) {
-                throw new TransactionLogException(
-                        "It is mandatory to inform the target wallet to register the transfer type transaction.");
-            }
-
-            transaction.targetWallet(transactionLogBean.targetWallet());
-        }
-
-        repository.save(transaction.build());
-    }
-
-    @Transactional
-    public TransactionLog logProcessing(@NotNull @Valid TransactionLogBean transactionLogBean) {
-        log.info("Creating trasanction log with status processing and the following criteria: {}", transactionLogBean);
-        var transactionLog = initializeTransaction(transactionLogBean, TransactionStatus.PROCESSING).build();
-
-        return repository.save(transactionLog);
-    }
-
-    private static TransactionLogBuilder initializeTransaction(TransactionLogBean transactionLogBean,
-            TransactionStatus status) {
+    public TransactionLog log(@NotNull @Valid TransactionLogBean transactionLogBean, @NotNull TransactionStatus status) {
+        log.info("Creating trasanction log with status {} and the following criteria: {}", status, transactionLogBean);
         var transactionLogBuilder = TransactionLog.builder()
                 .correlationId(UUID.randomUUID())
                 .operation(transactionLogBean.operationType())
@@ -91,20 +64,16 @@ public class TransactionLogService {
             transactionLogBuilder.sourceWallet(transactionLogBean.sourceWallet());
         }
 
-        if (transactionLogBean.operationType() != OperationType.WITHDRAW) {
-            transactionLogBuilder.targetWallet(transactionLogBean.targetWallet());
-        }
-
-        if (transactionLogBean.operationType() == OperationType.TRANSFER) {
+        if (List.of(OperationType.TRANSFER, OperationType.DEPOSIT).contains(transactionLogBean.operationType())) {
             if (transactionLogBean.targetWallet() == null) {
                 throw new TransactionLogException(
-                        "It is mandatory to inform the target wallet to register the transfer type transaction.");
+                        "It is mandatory to inform the target wallet to register the transfer or deposit type transaction.");
             }
 
             transactionLogBuilder.targetWallet(transactionLogBean.targetWallet());
         }
 
-        return transactionLogBuilder;
+        return repository.save(transactionLogBuilder.build());
     }
 
     /**

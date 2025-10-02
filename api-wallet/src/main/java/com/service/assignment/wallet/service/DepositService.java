@@ -1,33 +1,34 @@
 package com.service.assignment.wallet.service;
 
-import org.springframework.stereotype.Service;
-
 import com.service.assignment.wallet.bean.TransactionLogBean;
 import com.service.assignment.wallet.domain.Wallet;
 import com.service.assignment.wallet.dto.api.request.DepositRequest;
 import com.service.assignment.wallet.dto.messaging.TransactionDepositCorrelationId;
+import com.service.assignment.wallet.enums.TransactionStatus;
 import com.service.assignment.wallet.exception.DepositException;
 import com.service.assignment.wallet.exception.WalletNotFoundException;
 import com.service.assignment.wallet.queue.producer.DepositProducer;
 import com.service.assignment.wallet.repository.WalletRepository;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Service responsible for handling deposit operations into a user's wallet.
- * 
+ *
  * <pre>
  * This service ensures that a user can only deposit funds into their own wallet.
  * Upon a successful deposit, the wallet balance is updated and the transaction is logged.
- * 
+ *
  * This service is transactional, meaning the database operations within the method
  * will either complete successfully together or be rolled back in case of failure.
  * </pre>
- * 
+ *
  * @author Leonardo Freua
  */
 @Slf4j
@@ -42,7 +43,7 @@ public class DepositService {
     /**
      * Executes a deposit operation into a wallet as described by the provided
      * {@link DepositMessage}.
-     * 
+     *
      * <pre>
      * This method performs the following validations and steps:
      *   - Validates that the wallet exists
@@ -71,7 +72,7 @@ public class DepositService {
         }
 
         var transactionLog = transactionLogService
-                .logProcessing(TransactionLogBean.buildDeposit(targetWallet, depositRequest.amount()));
+                .log(TransactionLogBean.buildDeposit(targetWallet, depositRequest.amount(), UUID.randomUUID()), TransactionStatus.PROCESSING);
         depositProducer.send(new TransactionDepositCorrelationId(transactionLog.getCorrelationId()));
 
         // var newBalance = wallet.getBalance().add(depositBean.amount().value());
