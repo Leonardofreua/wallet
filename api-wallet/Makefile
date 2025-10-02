@@ -1,5 +1,8 @@
 SHELL := /bin/bash
 
+install:
+	mvn clean install -DskipTests && mvn liquibase\:diff
+
 deploy:
 	@echo "Deploying the infrastructure..."
 	cd terraform && tflocal init && tflocal plan && tflocal apply --auto-approve
