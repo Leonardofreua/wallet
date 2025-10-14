@@ -19,3 +19,7 @@ variable "account_id" {
 resource "aws_sqs_queue" "deposit_queue" {
   name                        = "deposit_queue"
 }
+
+resource "aws_sqs_queue" "transfer_queue" {
+  name                        = "transfer_queue"
+}
