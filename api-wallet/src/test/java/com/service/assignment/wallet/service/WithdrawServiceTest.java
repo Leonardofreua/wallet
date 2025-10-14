@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import com.service.assignment.wallet.domain.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.service.assignment.wallet.bean.WithdrawBean;
-import com.service.assignment.wallet.domain.User;
 import com.service.assignment.wallet.domain.Wallet;
 import com.service.assignment.wallet.type.Amount;
 import com.service.assignment.wallet.exception.WalletNotFoundException;
@@ -57,7 +57,7 @@ class WithdrawServiceTest {
         long walletId = 1L;
         long correctUserId = 100L;
         long incorrectUserId = 999L;
-        var wallet = Wallet.of(new User(correctUserId, "email@test.com"), BigDecimal.valueOf(100));
+        var wallet = Wallet.of(new Customer(correctUserId, "email@test.com"), BigDecimal.valueOf(100));
         var withdrawBean = new WithdrawBean(walletId, incorrectUserId, new Amount(BigDecimal.TEN));
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
 
@@ -75,7 +75,7 @@ class WithdrawServiceTest {
         // Given
         long userId = 100L;
         long walletId = 1L;
-        var wallet = Wallet.of(new User(userId, "email@test.com"), BigDecimal.ZERO);
+        var wallet = Wallet.of(new Customer(userId, "email@test.com"), BigDecimal.ZERO);
         var withdrawBean = new WithdrawBean(walletId, userId, new Amount(BigDecimal.TEN));
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
 
@@ -93,7 +93,7 @@ class WithdrawServiceTest {
         // Given
         long userId = 100L;
         long walletId = 1L;
-        var wallet = Wallet.of(new User(userId, "email@test.com"), BigDecimal.TEN);
+        var wallet = Wallet.of(new Customer(userId, "email@test.com"), BigDecimal.TEN);
         var withdrawBean = new WithdrawBean(walletId, userId, new Amount(BigDecimal.valueOf(20)));
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
 
@@ -113,7 +113,7 @@ class WithdrawServiceTest {
         long walletId = 1L;
         var initialBalance = BigDecimal.valueOf(100);
         var amountToWithdraw = BigDecimal.valueOf(30);
-        var wallet = Wallet.of(new User(userId, "email@test.com"), initialBalance);
+        var wallet = Wallet.of(new Customer(userId, "email@test.com"), initialBalance);
         var withdrawBean = new WithdrawBean(walletId, userId, new Amount(amountToWithdraw));
 
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));

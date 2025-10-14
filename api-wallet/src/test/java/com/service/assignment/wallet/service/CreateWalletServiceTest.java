@@ -1,5 +1,19 @@
 package com.service.assignment.wallet.service;
 
+import com.service.assignment.wallet.domain.Customer;
+import com.service.assignment.wallet.domain.Wallet;
+import com.service.assignment.wallet.exception.UserNotFoundException;
+import com.service.assignment.wallet.repository.UserRepository;
+import com.service.assignment.wallet.repository.WalletRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,21 +22,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import com.service.assignment.wallet.domain.User;
-import com.service.assignment.wallet.domain.Wallet;
-import com.service.assignment.wallet.exception.UserNotFoundException;
-import com.service.assignment.wallet.repository.UserRepository;
-import com.service.assignment.wallet.repository.WalletRepository;
 
 @ExtendWith(MockitoExtension.class)
 class CreateWalletServiceTest {
@@ -54,12 +53,12 @@ class CreateWalletServiceTest {
     void execute_shouldReturnExistingWallet_whenWalletAlreadyExists() {
         // Given
         long userId = 1L;
-        User user = new User(userId, "anyemail@test.com");
+        Customer user = new Customer(userId, "anyemail@test.com");
 
         Wallet existingWallet = Wallet.of(user, BigDecimal.TEN);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(walletRepository.findByUserId(userId)).thenReturn(Optional.of(existingWallet));
+        when(walletRepository.findByCustomerId(userId)).thenReturn(Optional.of(existingWallet));
 
         // When
         Wallet result = createWalletService.execute(userId);
@@ -68,7 +67,7 @@ class CreateWalletServiceTest {
         assertNotNull(result);
         assertEquals(existingWallet, result);
 
-        verify(walletRepository).findByUserId(userId);
+        verify(walletRepository).findByCustomerId(userId);
         verify(walletRepository, never()).saveAndFlush(any());
     }
 
@@ -76,10 +75,10 @@ class CreateWalletServiceTest {
     void execute_shouldCreateNewWallet_whenUserExistsAndNoExistingWallet() {
         // Given
         long userId = 1L;
-        User user = new User(userId, "anyemail@test.com");
+        Customer user = new Customer(userId, "anyemail@test.com");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(walletRepository.findByUserId(userId)).thenReturn(Optional.empty());
+        when(walletRepository.findByCustomerId(userId)).thenReturn(Optional.empty());
 
         Wallet savedWallet = Wallet.of(user, BigDecimal.ZERO);
         when(walletRepository.saveAndFlush(any(Wallet.class))).thenReturn(savedWallet);
@@ -89,11 +88,11 @@ class CreateWalletServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals(userId, result.getUser().getId());
+        assertEquals(userId, result.getCustomer().getId());
         assertEquals(BigDecimal.ZERO, result.getBalance());
 
         verify(userRepository).findById(userId);
-        verify(walletRepository).findByUserId(userId);
+        verify(walletRepository).findByCustomerId(userId);
         verify(walletRepository).saveAndFlush(savedWallet);
     }
 }

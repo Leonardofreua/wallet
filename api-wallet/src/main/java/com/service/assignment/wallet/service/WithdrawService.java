@@ -67,7 +67,7 @@ public class WithdrawService {
         Wallet wallet = walletRepository.findById(withdrawBean.walletId())
                 .orElseThrow(() -> new WalletNotFoundException(withdrawBean.walletId()));
 
-        if (wallet.getUser().getId() != withdrawBean.userId()) {
+        if (wallet.getCustomer().getId() != withdrawBean.userId()) {
             throw new WithdrawException("The user can only withdraw from his own wallet!");
         }
 

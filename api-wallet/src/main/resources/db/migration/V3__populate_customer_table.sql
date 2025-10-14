@@ -1,4 +1,4 @@
-INSERT INTO wallet.user (email)
+INSERT INTO wallet.customer (email)
 VALUES
   ('alice@example.com'),
   ('bob@example.com'),

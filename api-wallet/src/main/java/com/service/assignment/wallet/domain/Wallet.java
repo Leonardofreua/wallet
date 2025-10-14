@@ -42,8 +42,8 @@ public class Wallet {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    @JoinColumn(name = "customer_id", nullable = false, unique = true)
+    private Customer customer;
 
     @Setter
     @Column(nullable = false)
@@ -57,9 +57,9 @@ public class Wallet {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static Wallet of(User user, BigDecimal balance) {
+    public static Wallet of(Customer customer, BigDecimal balance) {
         return Wallet.builder()
-            .user(user)
+            .customer(customer)
             .balance(balance)
             .build();
     }

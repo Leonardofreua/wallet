@@ -19,12 +19,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user", schema = "wallet")
-public class User {
+@Table(name = "customer", schema = "wallet")
+public class Customer {
 
     @Id
-    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "user_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "customer_id_seq", sequenceName = "customer_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "customer_id_seq", strategy = GenerationType.SEQUENCE)
     @Column(unique = true, nullable = false, updatable = false)
     @Setter(AccessLevel.NONE)
     private Long id;

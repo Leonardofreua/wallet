@@ -52,16 +52,16 @@ public class CreateWalletService {
     @Transactional
     public Wallet execute(@Positive long userId) {
         log.info("Requested to create a wallet for the user {}", userId);
-        var user = userRepository.findById(userId)
+        var customer = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        var existingWallet = walletRepository.findByUserId(userId);
+        var existingWallet = walletRepository.findByCustomerId(userId);
         if (existingWallet.isPresent()) {
             log.info("User {} already has a wallet.", userId);
             return existingWallet.get();
         }
 
-        Wallet newWallet = Wallet.of(user, BigDecimal.ZERO);
+        Wallet newWallet = Wallet.of(customer, BigDecimal.ZERO);
         walletRepository.saveAndFlush(newWallet);
 
         log.info("Wallet successfully created for user {}", userId);

@@ -1,21 +1,21 @@
 SET client_encoding TO utf8;
 
-CREATE TABLE IF NOT EXISTS wallet.user (
+CREATE TABLE IF NOT EXISTS wallet.customer (
     id    BIGSERIAL PRIMARY KEY NOT NULL,
     email VARCHAR(255) UNIQUE   NOT NULL
 );
 
-ALTER SEQUENCE wallet.user_id_seq OWNER TO wallet_user;
-GRANT ALL ON SEQUENCE wallet.user_id_seq TO wallet_user;
-GRANT SELECT, UPDATE ON SEQUENCE wallet.user_id_seq TO wallet_user;
+ALTER SEQUENCE wallet.customer_id_seq OWNER TO wallet_user;
+GRANT ALL ON SEQUENCE wallet.customer_id_seq TO wallet_user;
+GRANT SELECT, UPDATE ON SEQUENCE wallet.customer_id_seq TO wallet_user;
 
 CREATE TABLE IF NOT EXISTS wallet.wallet (
-    id         BIGSERIAL PRIMARY KEY       NOT NULL,
-    user_id    BIGINT                      NOT NULL,
-    balance    NUMERIC(19,2)               NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES wallet.user(id)
+    id          BIGSERIAL PRIMARY KEY       NOT NULL,
+    customer_id BIGINT                  NOT NULL,
+    balance     NUMERIC(19,2)               NOT NULL,
+    created_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES wallet.customer(id)
 );
 
 ALTER SEQUENCE wallet.wallet_id_seq OWNER TO wallet_user;

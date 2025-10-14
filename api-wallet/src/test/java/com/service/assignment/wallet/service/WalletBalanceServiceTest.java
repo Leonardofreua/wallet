@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import com.service.assignment.wallet.domain.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,7 +44,7 @@ class WalletBalanceServiceTest {
         // Given
         long walletId = 2L;
         BigDecimal expectedBalance = new BigDecimal("100.00");
-        var wallet = Wallet.of(new User(walletId, "email@test.com"), expectedBalance);
+        var wallet = Wallet.of(new Customer(walletId, "email@test.com"), expectedBalance);
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
 
         // When & Then
