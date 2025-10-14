@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 install:
-	mvn clean install -DskipTests && mvn liquibase\:diff
+	mvn clean install -DskipTests
 
 deploy:
 	@echo "Deploying the infrastructure..."
