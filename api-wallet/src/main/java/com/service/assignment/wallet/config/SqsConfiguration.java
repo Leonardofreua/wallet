@@ -30,7 +30,7 @@ public class SqsConfiguration {
         return SqsClient.builder()
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
-                .applyMutation(builder -> builder.endpointOverride(URI.create(ENDPOINT_URL)))
+                .endpointOverride(URI.create(ENDPOINT_URL))
                 .build();
     }
 }
