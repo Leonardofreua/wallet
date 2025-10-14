@@ -51,7 +51,6 @@ public class WalletController {
     // Mappers
     private final WalletMapper walletMapper;
     private final WithdrawMapper withdrawMapper;
-    private final TransferMapper transferMapper;
 
     @PostMapping
     public ResponseEntity<WalletResponse> createWallet(@RequestBody @Valid @NotNull CreateWalletRequest request) {
@@ -81,11 +80,11 @@ public class WalletController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/{walletId}/transfer")
+    @PostMapping("/{sourceWalletId}/transfer")
     public ResponseEntity<Void> transfer(
-            @PathVariable @Positive long walletId,
+            @PathVariable @Positive long sourceWalletId,
             @RequestBody @Valid @NotNull TransferRequest request) {
-        transferService.execute(transferMapper.toTransferBean(walletId, request));
+        transferService.execute(sourceWalletId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
