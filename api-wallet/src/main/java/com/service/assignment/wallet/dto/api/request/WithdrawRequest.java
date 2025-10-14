@@ -1,6 +1,6 @@
 package com.service.assignment.wallet.dto.api.request;
 
-import com.service.assignment.wallet.domain.type.Amount;
+import com.service.assignment.wallet.type.Amount;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.service.assignment.wallet.domain.type;
+package com.service.assignment.wallet.type;
 
 import java.math.BigDecimal;
 

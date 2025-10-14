@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.service.assignment.wallet.domain.User;
 import com.service.assignment.wallet.domain.Wallet;
 import com.service.assignment.wallet.exception.WalletNotFoundException;
 import com.service.assignment.wallet.repository.WalletRepository;

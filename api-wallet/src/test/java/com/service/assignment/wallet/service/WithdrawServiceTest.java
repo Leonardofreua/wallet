@@ -19,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.service.assignment.wallet.bean.WithdrawBean;
 import com.service.assignment.wallet.domain.User;
 import com.service.assignment.wallet.domain.Wallet;
-import com.service.assignment.wallet.domain.type.Amount;
+import com.service.assignment.wallet.type.Amount;
 import com.service.assignment.wallet.exception.WalletNotFoundException;
 import com.service.assignment.wallet.exception.WithdrawException;
 import com.service.assignment.wallet.repository.WalletRepository;

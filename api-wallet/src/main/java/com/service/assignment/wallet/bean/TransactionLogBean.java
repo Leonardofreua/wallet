@@ -1,7 +1,7 @@
 package com.service.assignment.wallet.bean;
 
 import com.service.assignment.wallet.domain.Wallet;
-import com.service.assignment.wallet.domain.type.Amount;
+import com.service.assignment.wallet.type.Amount;
 import com.service.assignment.wallet.enums.OperationType;
 
 import jakarta.validation.Valid;
