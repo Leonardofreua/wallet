@@ -8,7 +8,6 @@
 OBS.: If someone of the containers are not created (except kafka-ui), the application will not
 run. It may happen that at some point the kafka container doesn't start up the first time.
 
-
 # Testing
 
 As user registration is not the responsibility of the wallet microservice, the application database will be created with 3 test users.
