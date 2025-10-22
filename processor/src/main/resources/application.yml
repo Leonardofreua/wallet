@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: wallet-processor
+  config:
+    activate:
+      on-profile: default
+  datasource:
+    url: jdbc:postgresql://localhost:5433/wallet_service?currentSchema=wallet
+    username: wallet_user
+    password: wallet_pass
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+logging:
+  level:
+    root: INFO
+
+server:
+  port: 8090
+
+aws:
+  region: us-east-1
+  access-key: test
+  secret-key: test
+  sqs:
+    deposit-queue:
+      url: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/deposit_queue
+      max-number-of-messages: 10
+    transfer-queue:
+      url: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/transfer_queue
+      max-number-of-messages: 10
